@@ -4,7 +4,7 @@ Blog using the Python Flask micro-framework.
 
 Built following the  [`Flask Mega-Tutorial`](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)
 
-Custom features added (not covered in tutorial):
+## Custom features added (not covered in tutorial):
 1) User login by both Email or Username
 2) [Only single user session at a time](https://stackoverflow.com/questions/23360019/disable-simultaneous-login-from-multiple-different-places-on-flask-login)
 
