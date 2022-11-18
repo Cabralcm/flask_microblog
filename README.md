@@ -12,11 +12,11 @@ Custom features added (not covered in tutorial):
 
 ## Werkzeug (Security)
 
-### 1 This package's method `werkzeug.security.generate_password_hash()` will automatically `salt` your generated password hash.
+1) This package's method `werkzeug.security.generate_password_hash()` will automatically `salt` your generated password hash.
 
-### 2 The output string from this method will contain: the `hash algorithm`, `salt` used to generate the hash, the resulting `hash`
+2) The output string from this method will contain: the `hash algorithm`, `salt` used to generate the hash, the resulting `hash`
 
-### 3 The method `werkzeug.security.check_password_hash()` is used to verify the hash generated from a given password.
+3) The method `werkzeug.security.check_password_hash()` is used to verify the hash generated from a given password.
 
 > Note, databases should NEVER store the password, they instead can store the `salt` and `hash` for each password.The salt should be randomly generated for each instance of a user's password. Passwords that are the same should have different salts.
 
