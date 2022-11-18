@@ -1,0 +1,5 @@
+microblog/migrations/*
+microblog/app.db
+microblog/logs/*
+microblog/Lib/*
+*.flaskenv
