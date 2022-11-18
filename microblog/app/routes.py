@@ -40,8 +40,8 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        email = User.query.filter_by(email=form.username.data).first()
+        user = User.query.filter_by(username=form.username.data.lower()).first()
+        email = User.query.filter_by(email=form.username.data.lower()).first()
 
         invalid_access_message = "Invalid username/email or password"
 
@@ -94,8 +94,8 @@ def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
+        user = User(username=form.username.data.lower(), email=form.email.data.lower())
+        user.set_password(form.password.data.lower())
         db.session.add(user) #Add the user to the db session
         db.session.commit() #Commit the session to the database (this is to ensure data integrity and atomic operations)
 
@@ -129,7 +129,7 @@ def edit_profile():
     
     # Submitting the form - That is, A POST request
     if form.validate_on_submit():
-        current_user.username = form.username.data #extract the values from the EditProfileForm()
+        current_user.username = form.username.data.lower() #extract the values from the EditProfileForm()
         current_user.about_me = form.about_me.data #extract the values from the EditProfileForm()
         db.session.commit() #commit the changes to the database
         flash('Your changes have been saved.')
