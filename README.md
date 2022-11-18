@@ -6,7 +6,7 @@ Built following the  [`Flask Mega-Tutorial`](https://blog.miguelgrinberg.com/pos
 
 Custom features added (not covered in tutorial):
 1) User login by both Email or Username
-2) (Only single user session at a time)[https://stackoverflow.com/questions/23360019/disable-simultaneous-login-from-multiple-different-places-on-flask-login]
+2) [Only single user session at a time](https://stackoverflow.com/questions/23360019/disable-simultaneous-login-from-multiple-different-places-on-flask-login)
 
 # Notes and Learnings
 
