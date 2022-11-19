@@ -63,12 +63,22 @@ class User(UserMixin, db.Model):
         return self.followed.filter(
             followers.c.followed_id == user.id).count() > 0 #result will be 0 or 1
 
-    def followed_posts(self):
+    def followed_posts_temp(self):
         return Post.query.join(
             followers, (followers.c.followed_id == Post.user_id)).filter(
                 followers.c.follower_id == self.id).order_by( Post.timestamp.desc())
         # Join obtains a table that contains all the users (followed users) that have posts!
         # Filter out the users that we are following! Filter where the follower_id (people who are followers), are equal to our id (that is, US!)
+    
+    def followed_posts(self):
+        # Posts of all Users I am following
+        followed = Post.query.join(
+            followers, (followers.c.followed_id == Post.user_id)).filter(
+                followers.c.follower_id == self.id)
+        # All of my own Posts
+        own = Post.query.filter_by(user_id = self.id)        
+        # Union of Own Posts and Followed Posts
+        return followed.union(own).order_by( Post.timestamp.desc() )
 
 
 
