@@ -9,6 +9,13 @@ from hashlib import md5
 def load_user(id):
     return User.query.get(int(id))
 
+# Followers Association Table
+# This table is not declared as a model (like the users and posts tables)
+# Due to being an Auxillary (association/join table), it has no data other than foreign keys (keys in this table that map to Primary keys in other Tables)
+followers = db.Table('followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+    )
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -18,6 +25,17 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    # Many to Many relationship for the Followed vs Followers
+    # For a pair, the left side User is FOLLOWING the right side User
+    # User |    Association Table       | User
+    # id   | follower_id - followed_id  | id
+    followed = db.relationship(
+        'User', secondary = followers,
+        primaryjoin = (followers.c.follower_id == id),
+        secondaryjoin = (followers.c.followed_id == id),
+        backref = db.backref('followers', lazy='dynamic'), #Definition from the Right Side towards the left side ()
+        lazy='dynamic'
+    )
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -32,6 +50,26 @@ class User(UserMixin, db.Model):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         gravatar_url = 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'
         return gravatar_url.format(digest, size)
+    
+    def follow(self, user):
+        if not self.is_following(user): #Only allow a User to follow another User once!
+            self.followed.append(user)
+    
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+    
+    def is_following(self, user):
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0 #result will be 0 or 1
+
+    def followed_posts(self):
+        return Post.query.join(
+            followers, (followers.c.followed_id == Post.user_id)).filter(
+                followers.c.follower_id == self.id).order_by( Post.timestamp.desc())
+        # Join obtains a table that contains all the users (followed users) that have posts!
+        # Filter out the users that we are following! Filter where the follower_id (people who are followers), are equal to our id (that is, US!)
+
 
 
 class Post(db.Model):
