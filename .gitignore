@@ -7,5 +7,6 @@ microblog/lib64/*
 microblog/bin/*
 microblog/include/*
 microblog/__pycache__/*
+microblog/Scripts/*
 microblog/pyvenv.cfg
 *.flaskenv
