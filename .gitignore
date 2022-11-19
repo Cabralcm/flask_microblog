@@ -2,4 +2,10 @@ microblog/migrations/*
 microblog/app.db
 microblog/logs/*
 microblog/Lib/*
+microblog/lib/*
+microblog/lib64/*
+microblog/bin/*
+microblog/include/*
+microblog/__pycache__/*
+microblog/pyvenv.cfg
 *.flaskenv

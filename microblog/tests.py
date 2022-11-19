@@ -8,11 +8,13 @@ from app.models import User, Post
 
 class UserModelCase(unittest.TestCase):
     
+    # Allows Flask App to run in the Python shell
     def setUp(self):
         self.app_context = app.app_context()
         self.app_context.push()
-        db.create_all()
+        db.create_all() #Creates all of the database tables
     
+    # Removing Flask App and Database to run in the Python shell
     def tearDown(self):
         db.session.remove()
         db.drop_all()
@@ -57,8 +59,8 @@ class UserModelCase(unittest.TestCase):
         # Create four users
         u1 = User(username='john', email='john@example.com')
         u2 = User(username='susan', email='susan@example.com')
-        u3 = user(username='mary', email='mary@example.com')
-        u4 = user(username='david', email='david@example.com')
+        u3 = User(username='mary', email='mary@example.com')
+        u4 = User(username='david', email='david@example.com')
         db.session.add_all([u1,u2,u3,u4])
 
         # Create four posts
